@@ -1,0 +1,72 @@
+
+\section{Evaluation Method}
+
+Attenuation relationship relates the distance from source to the ground motion features such as PGA, PGV and PGD.  Plotting this data for different stations in the logarithmic scale for different cases suggest that attenuation relationship can initially be approximated by a single line. So we will use linear regression ( straight line-first order polynomial degree regression model) for both data and synthetics. $b$ is the slope of the regression line, ($y=a+bx+\epsilon$, being $\epsilon$ the error rodisturbance term associated to that model and $a$ the intercept), which can be calculated by equation (\ref{eq:a}). Later, if necessary, we can expand this concept to a bilinear approximation for a better fit. 
+
+
+%
+\begin{equation}
+	\mathrm{b} = \left( 
+		\frac{\sum\limits_{i=1}^n ((x_i-\bar{x})(y_i-\bar{y}))}{\sum\limits_{i=1}^n (x_i-\bar{x})^2} 
+	\right)
+	\hspace{0.25em}.
+	\label{eq:a}
+\end{equation}
+
+For camparing two lines, there are two components to be considered. The distance of two lines (we call it "Amplitude score") and their slope (we call it "Rate score").The evaluation process proposed here is based on defining a goodness-of-fit criteria for these two aspects. 
+
+For comparing the difference between the amount of peak ground characteristic of data and synthetics at each station, the goodness-of-fit (GOF) criteria (peak acceleration (C5), peak velocity (C6), peak displacement (C7)) proposed by \citet{Anderson_2004_Proc} is used. For these GOF scale, Each parameter is mapped onto a numerical scale ranging from 0 to 10, with 0 for the worsth and 10 for the best match between two signals.
+Any of the C5, C6 and C7 score can be calculated by equation (\ref{eq:s}).
+
+%
+\begin{equation}
+	\mathrm{S(p_1,p_2)} = 10exp \left( 
+		-(\frac{p_1 - p_2}{min(p_1,p_2)})^2
+	\right)
+	\hspace{0.25em}.
+	\label{eq:s}
+\end{equation}
+
+There are many benefits in using this function for calculating score. The function is monotonically decreasing as the difference between the parameters increase. It is symmetrical and because of that the score is similar regrdless of the order of bigger or smaller values. Multiplying the factor of 10 puts the score into a comfortable range of value for giving a score between 0 and 10. Small differences are not penalized too severely since it is an exponential function. We calculate this GOf at each station and find their average and assign that amount as the "amplitude score". 
+
+To define a GOF score for the differences in the slope of two lines, There are some statistical approach available. We suggest to use the Student's t-test based on the standard error of regression models according to an article by Andre and Estevez-Perez (2014). The advantages of using t-test is that this parameter not only considers the different slopes, but also is affected by the number of available data and synthetics and the standard deviation of the ground motion parameters. Generally, when there is a goofd fit of slope, the t has lower amount. Lower number of stations and higher stdv will increse the value of t. This will serve as a good factor for defining a GOF function for slope comparision. For that, certain amount of judgment will be needed to define the tren and to choose the necessary levels which should not be considered useful fits for engineering applications.
+
+Most t-test statistics can be formulated as $t_{experimetal}= \frac{(\hat{\theta}-\theta)}{SE}$, being $\theta$ a population parameter, $\hat{\theta}$ an estimator of ${\theta}$ and $SE$ the standard error of the estimator ( or equivalently, an estimation of the standard deviation of the estimator). The test statistic is equation (\ref{eq:t}).
+
+%
+\begin{equation}
+	\mathrm{t} = \left( 
+		\frac{b_1 - b_2}{s_{b_1-b_2}}
+	\right)
+	\hspace{0.25em}.
+	\label{eq:t}
+\end{equation}
+
+where
+
+%
+\begin{equation}
+	\mathrm{s_{b_1-b_2}} = \left( 
+		s_{Res}\sqrt{\frac{1}{s_{x_1}^2(n_1-1)}+\frac{1}{s_{x_2}^2(n_2-1)}}
+	\right)
+	\hspace{0.25em}.
+	\label{eq:sbb}
+\end{equation}
+
+being $n_1$ and $n_2$ the sample sizes for each sample datta and $s_{x_1}$ and $s_{x_2}$ standard deviations. $s_{Res}$ is a unique estimator which is a weighted average of two variances (alos known as $s_{pool}$ since by that we can pool the estimates of the error variances, weightening each by their degrees of freedom) and can be calculated from equation (\ref{eq:res}).
+
+%
+\begin{equation}
+	\mathrm{s_{Res}^2} = \left( 
+		\frac{(n_1-2)s_{y,x_1}^2+(n_2-2)s_{y,x_2}^2}{(n_1-2)+(n_2-2)}
+	\right)
+	\hspace{0.25em}.
+	\label{eq:res}
+\end{equation}
+
+
+in that, $s_{y,x_1}$ and $s_{y,x_2}$ are the residual variance (often known as squared standard error of the regression), which estimates the variance of the regression or variance of the model from the experimental data. Using above euation we can find the rate score of each pair of regression lines.
+
+There can be different approaches in the way of combination of amplitude and rate score. We can use simple average or also give weight to each score and calculate a weighted average. In this report, we simply considered the total average as simple average of two calculated scores.  
+
+
